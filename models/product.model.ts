@@ -16,8 +16,8 @@ export const VEGIIS_VARIANTS = {
     SANCKS: {
         type: "SANCKS",
         price: 0,
-        name: String,
-        description: String
+        name: string,
+        description: string
     },
     /* LANDSCAPE: {
         type: "LANDSCAPE",
