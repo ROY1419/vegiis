@@ -1,6 +1,6 @@
 import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/db";
-import Product, { IProduct } from "@/models/product.model";
+import { Product, IProduct } from "@/models/product.model";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
