@@ -70,6 +70,4 @@ const orderSchema = new Schema<IOrder>(
 );
 
 // Model Initialization
-const Order = models?.Order || mongoose.model<IOrder>("Order", orderSchema);
-
-export default Order;
+export const Order = models?.Order || mongoose.model<IOrder>("Order", orderSchema);
