@@ -1,4 +1,4 @@
-import mongoose, { models, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export const VEGIIS_VARIANTS = {
     VEG: {
@@ -32,11 +32,14 @@ export const VEGIIS_VARIANTS = {
 export type VegiisVariantsType = keyof typeof VEGIIS_VARIANTS;
 
 export interface VeggisVariant{
+    toUpperCase(): "VEG" | "NONVEG" | "SANCKS";
     type: VegiisVariantsType;
     price: number;
     license: "personal" | "commercial";
 }
 export interface IProduct {
+    length: number;
+    map: any;
     _id?: mongoose.Types.ObjectId;
     name: string;
     description: string;
@@ -62,6 +65,4 @@ const productSchema = new Schema({
 }, { timestamps: true });
 
 
-const Product = models?.Product || mongoose.model("Product", productSchema);
-
-export default Product;
+export const Product = mongoose.model("Product", productSchema);
