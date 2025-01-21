@@ -24,8 +24,8 @@ export default withAuth(
                 // Public routes
                 if (
                     pathname === "/" ||
-                    pathname.startsWith("/api/products") ||
-                    pathname.startsWith("/products")
+                    pathname.startsWith("/api/product") ||
+                    pathname.startsWith("/product")
                 ) {
                     return true;
                 }
