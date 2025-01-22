@@ -4,37 +4,50 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
     try {
-        const { email, password } = await request.json()
+        // Parse and validate the request body
+        const { email, password } = await request.json();
         if (!email || !password) {
             return NextResponse.json(
-                { email: "Email and password are required" },
+                { error: "Email and password are required" },
                 { status: 400 }
             );
-        };
-        await connectToDatabase()
-        const existingUser = User.findOne({ email })
-        if (!existingUser) {
+        }
+
+        // Connect to the database
+        await connectToDatabase();
+
+        // Check if the user already exists
+        const existingUser = await User.findOne({ email }); // Fix typo
+        if (existingUser) {
             return NextResponse.json(
-                { email: "Email already exists" },
+                { error: "Email already exists" },
                 { status: 400 }
             );
-        };
+        }
+
+        // Create a new user
         await User.create({
             email,
-            password,
-            role: "user"
+            password, // Ideally, hash the password before storing
+            role: "user",
         });
-        return NextResponse.json({
-            message: "User created successfully",
-            success: true,
-            status: 201,
-        });
+
+        return NextResponse.json(
+            {
+                message: "User created successfully",
+                success: true,
+            },
+            { status: 201 }
+        );
     } catch (error) {
         console.error("Registration error:", error);
-        return NextResponse.json({
-            message: "Registration failed",
-            success: false,
-            status: 500
-        })
+
+        return NextResponse.json(
+            {
+                error: "Registration failed",
+                success: false,
+            },
+            { status: 500 }
+        );
     }
 }
