@@ -1,7 +1,7 @@
 "use client";
 import { apiClient } from "@/lib/api-client";
 import { IProduct } from "@/models/product.model";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import ProductGallery from "./components/ProductGallery";
 
 
@@ -15,7 +15,6 @@ export default function Home() {
       } catch (error) {
         console.error("Error fetching products:", error);
       }
-
     }
     fetchProduct()
   }, [])
