@@ -1,38 +1,49 @@
-import { authOptions } from "@/lib/auth"
-import { connectToDatabase } from "@/lib/db"
-import { Order } from "@/models/order.model"
-import { getServerSession } from "next-auth"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { connectToDatabase } from "@/lib/db";
+import Order from "@/models/order.model";
 
-export async function GET(req: NextRequest) {
+
+export async function GET() {
     try {
-        const session = await getServerSession(authOptions)
+        const session = await getServerSession(authOptions);
         if (!session) {
-            return new NextResponse("Unauthorized", { status: 401 })
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
-        const { productId, variant } = await req.json()
-        await connectToDatabase()
-        // Create Razorpay order
+
+        await connectToDatabase();
         const orders = await Order.find({ userId: session.user.id })
             .populate({
                 path: "productId",
-                select: "productUrl name",
+                select: "imageUrl name",
+                // Return null if product not found instead of throwing error
                 options: { strictPopulate: false },
             })
             .sort({ createdAt: -1 })
-            .lean()
+            .lean();
 
-        const validOrders = orders.map((order)=> ({
+        // const validOrders = orders.map((order: { productId: any; }) => ({
+        //     ...order,
+        //     productId: order.productId || {
+        //         imageUrl: null,
+        //         name: "Product no longer available",
+        //     },
+        // }));
+        const validOrders = orders.map((order) => ({
             ...order,
             productId: order.productId || {
                 imageUrl: null,
                 name: "Product no longer available",
             },
-        }))
+        }));
 
-        return NextResponse.json(validOrders)
+        return NextResponse.json(validOrders);
     } catch (error) {
-        console.error("Error fetching order:", error);
-        return NextResponse.json({ error: "Faild to fetch order" }, { status: 500 });
+        console.error("Error fetching orders:", error);
+        return NextResponse.json(
+            { error: "Failed to fetch orders" },
+            { status: 500 }
+        );
     }
 }
