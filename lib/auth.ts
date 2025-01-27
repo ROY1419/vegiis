@@ -1,8 +1,9 @@
-import User from "@/models/user.model";
+
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "./db";
 import bcrypt from "bcryptjs";
+import { User } from "@/models/user.model";
 
 interface UserDocument {
     _id: string;
