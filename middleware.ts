@@ -24,11 +24,12 @@ export default withAuth(
                 // Public routes
                 if (
                     pathname === "/" ||
-                    pathname.startsWith("/api/product") ||
-                    pathname.startsWith("/product")
+                    pathname.startsWith("/api/products") ||
+                    pathname.startsWith("/products")
                 ) {
                     return true;
                 }
+
 
                 // Admin routes require admin role
                 if (pathname.startsWith("/admin")) {
