@@ -1,23 +1,29 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, models, Schema } from "mongoose";
 
 export const VEGIIS_VARIANTS = {
     VEG: {
         type: "VEG",
         price: 0,
+        dimensions: { weight: Number, height: Number },
         name: String,
-        description: String
+        description: String,
+        label: "Veg",
     },
     NONVEG: {
         type: "NONVEG",
         price: 0,
+        dimensions: { weight: Number, height: Number },
         name: String,
-        description: String
+        description: String,
+        label: "nonveg",
     },
     SANCKS: {
         type: "SANCKS",
         price: 0,
+        dimensions: { weight: Number, height: Number },
         name: String,
-        description: String
+        description: String,
+        label: "Snacks",
     },
     /* LANDSCAPE: {
         type: "LANDSCAPE",
@@ -31,13 +37,14 @@ export const VEGIIS_VARIANTS = {
 
 export type VegiisVariantsType = keyof typeof VEGIIS_VARIANTS;
 
-export interface VeggisVariant{
+export interface VeggisVariant {
     toUpperCase(): "VEG" | "NONVEG" | "SANCKS";
     type: VegiisVariantsType;
     price: number;
     license: "personal" | "commercial";
 }
 export interface IProduct {
+    imageUrl: any;
     length: number;
     map: any;
     _id?: mongoose.Types.ObjectId;
@@ -58,11 +65,12 @@ const vegisSchema = new Schema<VeggisVariant>({
 const productSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
-    image: { type: String, required: true },
+    price: { type: Number, required: true },
+    stock: { type: Number, default: 0 },
     category: { type: String, enum: ["vegi", "nonvegi", "snacks"], required: true },
     subcategory: { type: String, enum: ["vegi", "nonvegi", "snacks"], required: true },
     vegis: { type: [vegisSchema], default: [] },
 }, { timestamps: true });
 
-
-export const Product = mongoose.model("Product", productSchema);
+const Product = models?.Product || model("Product", productSchema);
+export default Product;
