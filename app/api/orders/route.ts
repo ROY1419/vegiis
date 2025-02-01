@@ -1,6 +1,6 @@
 import { authOptions } from "@/lib/auth";
 import { connectToDatabase } from "@/lib/db";
-import { Order } from "@/models/order.model";
+import Order from "@/models/order.model";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
